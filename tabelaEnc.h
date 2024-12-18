@@ -16,7 +16,7 @@ typedef struct rotTabela{
 } tipoTabela;
 
 extern void inicializarTabela(tipoTabela **tabela);
-extern void destruirTabela(tipoTabela **tabela);
+extern void destruirTabela(tipoTabela *tabela);
 extern void inserirElementoTab(tipoTabela **tabela, tDado *jogo);
 extern int quantOperacoes();
 extern tDado* removerElementoTab(tipoTabela **tabela, int matriz[TAM][TAM]);
