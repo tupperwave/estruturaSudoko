@@ -4,6 +4,7 @@
 #include "tipoSudoku.h"
 
 typedef tipoSudoku tDado;
+typedef struct rotTabela tipoTabela;
 
 /*
     Foi escolhido utilizar uma tabela encadeada para representar a tabela de jogos

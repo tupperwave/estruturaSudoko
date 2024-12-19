@@ -14,7 +14,8 @@ typedef struct rotSudoku {
     int resposta[TAM][TAM];
 } tipoSudoku;
 
-extern tipoSudoku* preencherSudoku(tipoSudoku *jogo, const char *linha);
+
+extern tipoSudoku* preencherSudoku(tipoSudoku *jogo, char *linha);
 extern void imprimirSudoku(tipoSudoku *sudoku);
 
 #endif // TIPOSUDOKU_H

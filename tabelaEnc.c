@@ -22,8 +22,11 @@ void destruirTabela(tipoTabela *tabela) {
 // Há uma maneira mais eficiente do que essa?
 void inserirElementoTab(tipoTabela **tabela, tDado *jogo) {
     tipoTabela *novo = malloc(sizeof(tipoTabela));
+    qOperacoes++;
     if (!novo) {  
+        printf("qOperacoes: %d\n", qOperacoes);
         puts("Erro ao alocar novo elemento.");
+        destruirTabela(*tabela);
         exit(1);
     }
     novo->sudoku = *jogo;   // Coloca o jogo no novo noh

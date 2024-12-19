@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tipoSudoku.h"
 
-tipoSudoku* preencherSudoku(tipoSudoku *jogo, const char *linha) {
+void removeQuebraLinha(char *str){
+    if (str[strlen(str) - 1] == '\n')
+        str[strlen(str) - 1] = '\0';
+}
+
+tipoSudoku* preencherSudoku(tipoSudoku *jogo, char *linha) {
+
+    removeQuebraLinha(linha);
     // Ponteiro para a primeira parte (puzzle)
-    const char *p = linha;
+    char *p = linha;
 
     // Preenche a primeira matriz (sudoku)
     for (int i = 0; i < TAM; i++) {
@@ -30,6 +38,15 @@ void imprimirSudoku(tipoSudoku *sudoku) {
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             printf("%d ", sudoku->sudoku[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n");
+
+    for (int i = 0; i < TAM; i++) {
+        for (int j = 0; j < TAM; j++) {
+            printf("%d ", sudoku->resposta[i][j]);
         }
         printf("\n");
     }
