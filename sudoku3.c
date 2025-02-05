@@ -11,6 +11,12 @@ typedef struct {
     char solucao[TOTAL_NUMS + 1];
 } tipoSudoku;
 
+// Função para comparar dois Sudokus pelo puzzle
+// Usa ponteiros genéricos para permitir o uso pela função qsort
+int compararSudoku(const void *jogo1, const void *jogo2) {
+    return strcmp(((tipoSudoku *)jogo1)->puzzle, ((tipoSudoku *)jogo2)->puzzle);
+}
+
 // Função para carregar Sudokus do arquivo
 int carregarSudokus(const char *nomeArquivo, tipoSudoku **sudokus) {
     FILE *arquivo = fopen(nomeArquivo, "r");
@@ -46,7 +52,20 @@ int carregarSudokus(const char *nomeArquivo, tipoSudoku **sudokus) {
     }
 
     fclose(arquivo);
+
+    // Ordena os Sudokus pelo puzzle para permitir busca binária
+    qsort(*sudokus, count, sizeof(tipoSudoku), compararSudoku);
+
     return count;
+}
+
+// Função para buscar um Sudoku na lista
+// Executa busca binária
+tipoSudoku *buscarSudoku(tipoSudoku *sudokus, int totalSudokus, const char *entrada) {
+    tipoSudoku chave;
+    strcpy(chave.puzzle, entrada);
+
+    return (tipoSudoku *)bsearch(&chave, sudokus, totalSudokus, sizeof(tipoSudoku), compararSudoku);
 }
 
 // Função para converter uma string de 81 caracteres para uma matriz 9x9
@@ -59,15 +78,6 @@ void stringParaMatriz(const char *str, int matriz[TAM][TAM]) {
     }
 }
 
-// Função de busca sequencial no array
-const char *buscarSudoku(tipoSudoku *sudokus, int count, const char *entrada) {
-    for (int i = 0; i < count; i++) {
-        if (strcmp(sudokus[i].puzzle, entrada) == 0) {
-            return sudokus[i].solucao;
-        }
-    }
-    return NULL;
-}
 
 int main() {
     tipoSudoku *sudokus;
@@ -79,7 +89,7 @@ int main() {
     scanf("%s", entrada);
 
     // Buscar o Sudoku
-    const char *solucao = buscarSudoku(sudokus, totalSudokus, entrada);
+    tipoSudoku *solucao = buscarSudoku(sudokus, totalSudokus, entrada);
     while (solucao == NULL) {
         printf("Sudoku não encontrado. Tente novamente.\n");
         printf("Digite o Sudoku completo (81 dígitos): ");
@@ -90,7 +100,7 @@ int main() {
     // Exibir a solução como matriz 9x9
     printf("Sudoku encontrado!\nSolução:\n");
     int matriz[TAM][TAM];
-    stringParaMatriz(solucao, matriz);
+    stringParaMatriz(solucao->solucao, matriz);
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             printf("%d ", matriz[i][j]);
